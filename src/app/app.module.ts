@@ -10,6 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './home/footer/footer.component';
 import { HeaderComponent } from './home/header/header.component';
+import {httpInterceptorProviders} from './auth/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,7 @@ import { HeaderComponent } from './home/header/header.component';
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

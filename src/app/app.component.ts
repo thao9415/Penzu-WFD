@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {TokenStorageService} from './auth/token-storage.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,27 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'wfd-penzu';
+  private roles: string[];
+  private authority: string;
+  private username: string;
+
+  constructor(private tokenStorage: TokenStorageService) { }
+
+  ngOnInit() {
+    if (this.tokenStorage.getToken()) {
+      this.username = this.tokenStorage.getUsername()
+      this.roles = this.tokenStorage.getAuthorities();
+      this.roles.every(role => {
+        if (role === 'ROLE_ADMIN') {
+          this.authority = 'admin';
+          return false;
+        } else if (role === 'ROLE_PM') {
+          this.authority = 'pm';
+          return false;
+        }
+        this.authority = 'user';
+        return true;
+      });
+    }
+  }
 }
