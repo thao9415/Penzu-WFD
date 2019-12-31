@@ -1,11 +1,12 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 const TOKEN_KEY = 'AuthToken';
 const USERNAME_KEY = 'AuthUsername';
 const AUTHORITIES_KEY = 'AuthAuthorities';
+const ID_KEY = 'AuthUserId';
 const NAME_KEY = 'Name';
 const EMAIL_KEY = 'Email';
-const ID_KEY = 'AuthUserId';
+const AVATAR_KEY = 'Avatar';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,7 @@ const ID_KEY = 'AuthUserId';
 export class TokenStorageService {
   private roles: Array<string> = [];
 
-  constructor() {
-  }
+  constructor() { }
 
   signOut() {
     window.sessionStorage.clear();
@@ -29,13 +29,22 @@ export class TokenStorageService {
     return sessionStorage.getItem(TOKEN_KEY);
   }
 
-  public saveUsername(username: string) {
-    window.sessionStorage.removeItem(USERNAME_KEY);
-    window.sessionStorage.setItem(USERNAME_KEY, username);
+  // public saveAvatar(avatar: string) {
+  //   window.sessionStorage.removeItem(AVATAR_KEY);
+  //   window.sessionStorage.setItem(AVATAR_KEY , avatar);
+  // }
+  //
+  // public getAvatar(): string {
+  //   return sessionStorage.getItem(AVATAR_KEY);
+  // }
+
+  public saveEmail(email: string) {
+    window.sessionStorage.removeItem(EMAIL_KEY);
+    window.sessionStorage.setItem(EMAIL_KEY, email);
   }
 
-  public getUsername(): string {
-    return sessionStorage.getItem(USERNAME_KEY);
+  public getEmail(): string {
+    return sessionStorage.getItem(EMAIL_KEY);
   }
 
   public getName(): string {
@@ -47,41 +56,40 @@ export class TokenStorageService {
     window.sessionStorage.setItem(NAME_KEY, name);
   }
 
-  // email
-  public getEmail(): string {
-    return  window.sessionStorage.getItem(EMAIL_KEY);
+  public saveUsername(username: string) {
+    window.sessionStorage.removeItem(USERNAME_KEY);
+    window.sessionStorage.setItem(USERNAME_KEY, username);
   }
 
-  public setEmail(email: string) {
-    window.sessionStorage.removeItem(EMAIL_KEY);
-    window.sessionStorage.setItem(EMAIL_KEY, email);
+  public getUsername(): string {
+    return sessionStorage.getItem(USERNAME_KEY);
   }
-
-  // userId
-
-  public getUserId(): string {
-    return sessionStorage.getItem(ID_KEY);
-  }
-
-
-  public setUserId(userId: string) {
-    window.sessionStorage.removeItem(ID_KEY);
-    window.sessionStorage.setItem(ID_KEY, userId);
-  }
-
 
   public saveAuthorities(authorities: string[]) {
     window.sessionStorage.removeItem(AUTHORITIES_KEY);
     window.sessionStorage.setItem(AUTHORITIES_KEY, JSON.stringify(authorities));
   }
 
+  public getUserId(): string {
+    return sessionStorage.getItem(ID_KEY);
+  }
+
+  public saveUserId(userId: string) {
+    window.sessionStorage.removeItem(ID_KEY);
+    window.sessionStorage.setItem(ID_KEY, userId);
+  }
+
   public getAuthorities(): string[] {
     this.roles = [];
 
     if (sessionStorage.getItem(TOKEN_KEY)) {
-      JSON.parse(sessionStorage.getItem(AUTHORITIES_KEY)).forEach(authority => {
-        this.roles.push(authority.authority);
-      });
+      try {
+        JSON.parse(sessionStorage.getItem(AUTHORITIES_KEY)).forEach(authority => {
+          this.roles.push(authority.authority);
+        });
+      } catch (e) {
+        console.log(e);
+      }
     }
 
     return this.roles;
